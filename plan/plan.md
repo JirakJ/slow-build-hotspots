@@ -240,6 +240,46 @@
 - [ ] Marketplace listing
 - [ ] Git tag `v2026.2.1`
 
+## Fáze 14: Git Enhancement — Build Time Regression per Commit
+
+- [ ] `CommitBuildProfile` datový model (build profile + commit SHA, author, message)
+  - [ ] Ukládání HEAD SHA při každém buildu přes `GitRepositoryManager`
+- [ ] `BuildRegression` detekce
+  - [ ] Sliding window algoritmus (window size konfigurovatelný, default 5)
+  - [ ] Threshold: >15 % nárůst oproti průměru → regrese
+  - [ ] `TaskRegression` — per-task breakdown zpomalení
+- [ ] Timeline view: graf build time vs. commit
+- [ ] VCS Log integrace: ikona 🔥 u regresních commitů (`VcsLogHighlighterFactory`)
+- [ ] Drill-down: diff task times pro regresní commit
+- [ ] Action „Show Build Regression Author"
+- [ ] Unit testy
+
+## Fáze 15: Git Enhancement — PR Build Impact Prediction
+
+- [ ] `BuildImpactPrediction` datový model (predicted time, confidence, risk level)
+  - [ ] File→task mapping heuristika (module structure → task path)
+  - [ ] `TaskImpactPrediction` per-task predikce
+- [ ] Action „Predict Build Impact" (dostupná na non-main branches)
+  - [ ] Analýza změněných souborů oproti base branch
+  - [ ] Korelace s historickými build daty (regresní analýza)
+- [ ] `PredictionRisk` enum: LOW (<5 %), MEDIUM (5–20 %), HIGH (>20 %)
+- [ ] Warning notifikace při HIGH risk
+- [ ] Markdown report export pro PR description
+- [ ] Unit testy
+
+## Fáze 16: Git Enhancement — Historical Build Performance
+
+- [ ] Nový tab „Git History" v Build Health tool window
+  - [ ] Tabulka: commit SHA, autor, datum, branch, build time, delta
+  - [ ] Graf: build time trend (line chart) s branch filter
+  - [ ] Heatmap: dny v týdnu × hodiny (build time korelace)
+- [ ] `BuildStatistics` datový model (avg, median, P95, P99, trend direction)
+  - [ ] `TrendDirection` enum: IMPROVING, STABLE, DEGRADING
+- [ ] `BuildHistoryTimeline` — agregovaná data per branch
+- [ ] CSV/JSON export historických dat
+- [ ] Rozšířená retence: 100 buildů (z default 20)
+- [ ] Unit testy
+
 ---
 
 ## Budoucí fáze (Paid)

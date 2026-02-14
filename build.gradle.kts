@@ -129,6 +129,7 @@ tasks.register<proguard.gradle.ProGuardTask>("obfuscate") {
     keep("public class * extends com.intellij.openapi.actionSystem.AnAction { *; }")
     keep("public class * implements com.intellij.openapi.components.PersistentStateComponent { *; }")
     keep("public class * implements com.intellij.openapi.options.Configurable { *; }")
+    keep("public class * extends com.intellij.openapi.options.BoundConfigurable { *; }")
     keep("public class * extends com.intellij.openapi.startup.ProjectActivity { *; }")
     keep("public class * implements com.intellij.openapi.wm.ToolWindowFactory { *; }")
     keep("public class * implements com.intellij.openapi.wm.StatusBarWidgetFactory { *; }")

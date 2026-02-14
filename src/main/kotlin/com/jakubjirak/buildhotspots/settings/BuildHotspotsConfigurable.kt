@@ -1,100 +1,54 @@
 package com.jakubjirak.buildhotspots.settings
 
-import com.intellij.openapi.options.Configurable
-import com.intellij.ui.components.JBCheckBox
-import com.intellij.ui.components.JBLabel
-import com.intellij.ui.components.JBTextField
-import com.intellij.util.ui.FormBuilder
-import javax.swing.JComponent
-import javax.swing.JPanel
-import javax.swing.JSpinner
-import javax.swing.SpinnerNumberModel
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
+import com.intellij.openapi.options.BoundConfigurable
+import com.intellij.ui.dsl.builder.bindIntValue
+import com.intellij.ui.dsl.builder.bindSelected
+import com.intellij.ui.dsl.builder.bindText
+import com.intellij.ui.dsl.builder.panel
 
-class BuildHotspotsConfigurable : Configurable {
+class BuildHotspotsConfigurable : BoundConfigurable("Slow Build Hotspots") {
 
-    private var enabledCheckbox: JBCheckBox? = null
-    private var autoAnalyzeCheckbox: JBCheckBox? = null
-    private var profileDirField: JBTextField? = null
-    private var slowTaskSpinner: JSpinner? = null
-    private var configThresholdSpinner: JSpinner? = null
-    private var maxHistorySpinner: JSpinner? = null
-    private var mainPanel: JPanel? = null
+    private val settings get() = BuildHotspotsSettings.getInstance()
 
-    override fun getDisplayName(): String = "Slow Build Hotspots"
-
-    override fun createComponent(): JComponent {
-        val settings = BuildHotspotsSettings.getInstance()
-
-        enabledCheckbox = JBCheckBox("Enable Slow Build Hotspots", settings.enabled)
-        autoAnalyzeCheckbox = JBCheckBox("Auto-analyze after build", settings.autoAnalyze)
-
-        profileDirField = JBTextField(settings.profileDirectoryOverride).apply {
-            emptyText.text = "build/reports/profile (default)"
+    override fun createPanel() = panel {
+        group("General") {
+            row {
+                checkBox("Enable Slow Build Hotspots")
+                    .bindSelected(settings::enabled)
+            }
+            row {
+                checkBox("Auto-analyze after build")
+                    .bindSelected(settings::autoAnalyze)
+                    .comment("Automatically run build analysis when a build completes")
+            }
         }
-
-        slowTaskSpinner = JSpinner(SpinnerNumberModel(
-            settings.slowTaskThresholdPercent, 1, 50, 1,
-        ))
-
-        configThresholdSpinner = JSpinner(SpinnerNumberModel(
-            settings.configurationThresholdPercent, 5, 80, 5,
-        ))
-
-        maxHistorySpinner = JSpinner(SpinnerNumberModel(
-            settings.maxHistoryEntries, 5, 500, 5,
-        ))
-
-        mainPanel = FormBuilder.createFormBuilder()
-            .addComponent(enabledCheckbox!!)
-            .addComponent(autoAnalyzeCheckbox!!)
-            .addLabeledComponent(JBLabel("Profile directory:"), profileDirField!!)
-            .addLabeledComponent(JBLabel("Slow task threshold (%):"), slowTaskSpinner!!)
-            .addLabeledComponent(JBLabel("Configuration time threshold (%):"), configThresholdSpinner!!)
-            .addLabeledComponent(JBLabel("Maximum history entries:"), maxHistorySpinner!!)
-            .addComponentFillVertically(JPanel(), 0)
-            .panel
-
-        return mainPanel!!
-    }
-
-    override fun isModified(): Boolean {
-        val settings = BuildHotspotsSettings.getInstance()
-        return enabledCheckbox?.isSelected != settings.enabled ||
-            autoAnalyzeCheckbox?.isSelected != settings.autoAnalyze ||
-            profileDirField?.text != settings.profileDirectoryOverride ||
-            slowTaskSpinner?.value != settings.slowTaskThresholdPercent ||
-            configThresholdSpinner?.value != settings.configurationThresholdPercent ||
-            maxHistorySpinner?.value != settings.maxHistoryEntries
-    }
-
-    override fun apply() {
-        val settings = BuildHotspotsSettings.getInstance()
-        settings.enabled = enabledCheckbox?.isSelected ?: true
-        settings.autoAnalyze = autoAnalyzeCheckbox?.isSelected ?: false
-        settings.profileDirectoryOverride = profileDirField?.text ?: ""
-        settings.slowTaskThresholdPercent = slowTaskSpinner?.value as? Int ?: BuildHotspotsSettings.DEFAULT_SLOW_TASK_THRESHOLD
-        settings.configurationThresholdPercent = configThresholdSpinner?.value as? Int
-            ?: BuildHotspotsSettings.DEFAULT_CONFIGURATION_THRESHOLD
-        settings.maxHistoryEntries = maxHistorySpinner?.value as? Int ?: BuildHotspotsSettings.DEFAULT_MAX_HISTORY
-    }
-
-    override fun reset() {
-        val settings = BuildHotspotsSettings.getInstance()
-        enabledCheckbox?.isSelected = settings.enabled
-        autoAnalyzeCheckbox?.isSelected = settings.autoAnalyze
-        profileDirField?.text = settings.profileDirectoryOverride
-        slowTaskSpinner?.value = settings.slowTaskThresholdPercent
-        configThresholdSpinner?.value = settings.configurationThresholdPercent
-        maxHistorySpinner?.value = settings.maxHistoryEntries
-    }
-
-    override fun disposeUIResources() {
-        enabledCheckbox = null
-        autoAnalyzeCheckbox = null
-        profileDirField = null
-        slowTaskSpinner = null
-        configThresholdSpinner = null
-        maxHistorySpinner = null
-        mainPanel = null
+        group("Thresholds") {
+            row("Slow task threshold (%):") {
+                spinner(1..100)
+                    .bindIntValue(settings::slowTaskThresholdPercent)
+                    .comment("Tasks taking more than this percentage of total build time are flagged")
+            }
+            row("Configuration threshold (%):") {
+                spinner(1..100)
+                    .bindIntValue(settings::configurationThresholdPercent)
+                    .comment("Configuration phases taking more than this percentage are flagged")
+            }
+        }
+        group("Storage") {
+            row("Profile directory:") {
+                textFieldWithBrowseButton(
+                    FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                        .withTitle("Select Profile Directory"),
+                )
+                    .bindText(settings::profileDirectoryOverride)
+                    .comment("Override Gradle profile directory. Leave empty for auto-detect")
+            }
+            row("Max history entries:") {
+                spinner(10..500)
+                    .bindIntValue(settings::maxHistoryEntries)
+                    .comment("Maximum number of build analyses to keep in history")
+            }
+        }
     }
 }

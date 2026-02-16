@@ -36,8 +36,10 @@ class BuildHotspotsConfigurable : BoundConfigurable("Slow Build Hotspots") {
         group("Storage") {
             row("Profile directory:") {
                 cell(TextFieldWithBrowseButton().apply {
-                    addBrowseFolderListener("Select Profile Directory", null, null,
-                        FileChooserDescriptorFactory.createSingleFolderDescriptor())
+                    addBrowseFolderListener(
+                        com.intellij.openapi.ui.TextBrowseFolderListener(
+                            FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                                .withTitle("Select Profile Directory"), null))
                 })
                     .bindText(settings::profileDirectoryOverride)
                     .comment("Override Gradle profile directory. Leave empty for auto-detect")

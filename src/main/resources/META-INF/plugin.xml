@@ -2,38 +2,58 @@
     <id>com.jakubjirak.buildhotspots</id>
     <product-descriptor code="PBUILDHOTSPOTS" release-date="20260215" release-version="20262" optional="true"/>
     <name>Slow Build Hotspots</name>
-    <vendor email="jakub@jirak.dev" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
+    <vendor email="support@jakubjirak.com" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
 
     <description><![CDATA[
-<h2>Slow Build Hotspots</h2>
+<h2>Slow Build Hotspots — Find and Fix Gradle Build Bottlenecks</h2>
+
 <p>
-  Every second of build time costs developer focus. Slow Build Hotspots analyzes your Gradle builds to
-  pinpoint the exact tasks, cache misses, and non-incremental operations that are slowing you down —
-  with actionable optimization recommendations.
+  Analyzes your Gradle build profiles to pinpoint slow tasks, cache misses, and
+  non-incremental operations — with actionable optimization recommendations that
+  deliver measurable build time improvements.
 </p>
 
-<h2>Key Features</h2>
+<h3>Build Analysis</h3>
 <ul>
-  <li><b>Build Profile Analysis</b> — Parses Gradle <code>--profile</code> and build scan data</li>
-  <li><b>Slow Task Identification</b> — Ranked list of the most time-consuming build tasks</li>
-  <li><b>Cache Miss Analysis</b> — Detects tasks that should be cached but aren't</li>
-  <li><b>Non-Incremental Detection</b> — Finds tasks that rebuild unnecessarily</li>
+  <li><b>Profile Parsing</b> — Automatically parse Gradle <code>--profile</code> HTML reports</li>
+  <li><b>Hotspot Detection</b> — Ranked list of slowest tasks with severity levels (Critical, Slow, Notable)</li>
+  <li><b>Cache Miss Analysis</b> — Detect tasks that should be cached but are not</li>
+  <li><b>Non-Incremental Detection</b> — Find tasks that rebuild unnecessarily</li>
+</ul>
+
+<h3>Visualization</h3>
+<ul>
   <li><b>Performance Dashboard</b> — Visual breakdown of build time by task, phase, and module</li>
-  <li><b>Optimization Suggestions</b> — Specific, actionable recommendations per task</li>
+  <li><b>Inline Hints</b> — Hotspot annotations directly in build.gradle(.kts) files</li>
+  <li><b>Build Health Report</b> — Top 10 slowest tasks, cache hit rate, config vs execution split</li>
+  <li><b>Trend Graphs</b> — 30-day build time trends with regression detection (Pro)</li>
 </ul>
 
-<h2>Why Slow Build Hotspots?</h2>
-<p>
-  Developers lose hours per week to slow builds. This plugin transforms Gradle's raw profiling data into
-  clear, prioritized optimization opportunities that deliver measurable build time improvements.
-</p>
-
-<h2>Free vs Pro</h2>
+<h3>Optimization (Pro)</h3>
 <ul>
-  <li><b>Free:</b> Build profile analysis, slow task identification, cache miss analysis, optimization suggestions</li>
-  <li><b>Pro:</b> Build time trend charts over time, team build comparison, regression alerts, CI build analysis, and historical performance tracking</li>
+  <li><b>Optimization Suggestions</b> — Specific recommendations per task with before/after projections</li>
+  <li><b>Unlimited History</b> — Track all builds, not just the last 5</li>
+  <li><b>Data Export</b> — Export results as CSV or JSON</li>
 </ul>
-]]></description>
+
+<h3>Pricing</h3>
+<ul>
+  <li><b>Free</b> — Profile parsing, hotspot detection, dashboard, inline hints (top 10), health report, last 5 builds</li>
+  <li><b>Pro ($3.90/month)</b> — Optimization suggestions, trend graphs, unlimited history, all inline hints, CSV/JSON export</li>
+</ul>
+
+<h3>Requirements</h3>
+<ul>
+  <li>IntelliJ IDEA or compatible JetBrains IDE (2024.1+)</li>
+  <li>Gradle project with <code>--profile</code> support</li>
+</ul>
+
+<h3>Support</h3>
+<ul>
+  <li>Issues: <a href="https://github.com/JirakJ/slow-build-hotspots">GitHub</a></li>
+  <li>Email: support@jakubjirak.com</li>
+</ul>
+    ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends optional="true" config-file="git-features.xml">Git4Idea</depends>
@@ -81,4 +101,19 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
+
+    <change-notes><![CDATA[
+        <h3>What's New</h3>
+        <ul>
+            <li><b>Build Profile Analysis</b> - Parse Gradle --profile HTML reports to identify slow tasks and bottlenecks</li>
+            <li><b>Hotspot Detection</b> - Find slow tasks, cache misses, and non-incremental builds with severity levels</li>
+            <li><b>Performance Dashboard</b> - Visual breakdown of build time sorted by task duration with phase analysis</li>
+            <li><b>Inline Performance Hints</b> - See build hotspot annotations directly in your build.gradle(.kts) files</li>
+            <li><b>Build Health Report</b> - Summary of top 10 slowest tasks, cache hit rate, and config vs execution split</li>
+            <li><b>Optimization Suggestions</b> - Actionable recommendations per task with before/after time projections</li>
+            <li><b>Build History Tracking</b> - Compare builds over time to detect performance regressions</li>
+            <li><b>Trend Graphs</b> - 30-day build time trend visualization with regression detection</li>
+            <li><b>Data Export</b> - Export build analysis results as CSV or JSON for team sharing</li>
+        </ul>
+    ]]></change-notes>
 </idea-plugin>

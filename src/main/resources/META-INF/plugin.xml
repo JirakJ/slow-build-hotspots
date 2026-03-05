@@ -4,8 +4,7 @@
     <name>Slow Build Hotspots</name>
     <vendor email="support@jakubjirak.com" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
 
-    <description><![CDATA[
-<h2>Slow Build Hotspots — Find and Fix Gradle Build Bottlenecks</h2>
+    <description><![CDATA[<h2>Slow Build Hotspots — Find and Fix Gradle Build Bottlenecks</h2>
 
 <p>
   Analyzes your Gradle build profiles to pinpoint slow tasks, cache misses, and
@@ -26,20 +25,14 @@
   <li><b>Performance Dashboard</b> — Visual breakdown of build time by task, phase, and module</li>
   <li><b>Inline Hints</b> — Hotspot annotations directly in build.gradle(.kts) files</li>
   <li><b>Build Health Report</b> — Top 10 slowest tasks, cache hit rate, config vs execution split</li>
-  <li><b>Trend Graphs</b> — 30-day build time trends with regression detection (Pro)</li>
+  <li><b>Trend Graphs</b> — 30-day build time trends with regression detection</li>
 </ul>
 
-<h3>Optimization (Pro)</h3>
+<h3>Optimization</h3>
 <ul>
   <li><b>Optimization Suggestions</b> — Specific recommendations per task with before/after projections</li>
   <li><b>Unlimited History</b> — Track all builds, not just the last 5</li>
   <li><b>Data Export</b> — Export results as CSV or JSON</li>
-</ul>
-
-<h3>Pricing</h3>
-<ul>
-  <li><b>Free</b> — Profile parsing, hotspot detection, dashboard, inline hints (top 10), health report, last 5 builds</li>
-  <li><b>Pro ($3.90/month)</b> — Optimization suggestions, trend graphs, unlimited history, all inline hints, CSV/JSON export</li>
 </ul>
 
 <h3>Requirements</h3>
@@ -52,8 +45,7 @@
 <ul>
   <li>Issues: <a href="https://github.com/JirakJ/slow-build-hotspots">GitHub</a></li>
   <li>Email: support@jakubjirak.com</li>
-</ul>
-    ]]></description>
+</ul>]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends optional="true" config-file="git-features.xml">Git4Idea</depends>
@@ -90,6 +82,9 @@
                 id="Build Hotspots"
                 displayType="BALLOON"
                 toolWindowId="Build Hotspots"/>
+    
+        <notificationGroup id="Slow Build Hotspots Feedback" displayType="BALLOON"/>
+        <projectActivity implementation="com.jakubjirak.buildhotspots.feedback.FeedbackNotifier"/>
     </extensions>
 
     <actions>

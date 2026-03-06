@@ -8,21 +8,16 @@
 
 ## ✨ Features
 
-### Free Tier
 - **Build profile parsing** — analyzes Gradle `--profile` HTML reports
 - **Hotspot detection** — identifies slow tasks, cache misses, and non-incremental builds
 - **Performance dashboard** — task breakdown sorted by duration in the Build Hotspots tool window
-- **Inline performance hints** — top 10 hotspots shown as inlay hints in `build.gradle(.kts)`
+- **Inline performance hints** — hotspot inlay hints in `build.gradle(.kts)`
 - **Build health report** — top 10 slowest tasks, cache hit-rate, configuration vs. execution time split
 - **Severity levels** — 🔴 Critical (>30s), 🟠 Slow (10–30s), 🟡 Notable (5–10s)
-- **Build history** — stores the last 5 build profiles
-
-### Pro Tier ($3.90/month)
+- **Build history** — stores build profiles for comparison
 - **Optimization suggestions** — actionable quick-fixes (enable build cache, parallel execution, configuration cache)
 - **Before/after projections** — estimated time savings per suggestion
 - **Build time trends** — 30-day trend graph with regression detection
-- **Unlimited history** — no cap on stored build profiles
-- **All inline hints** — hints for every task, not just the top 10
 - **Data export** — CSV/JSON export of build performance data
 
 ## 📦 Installation

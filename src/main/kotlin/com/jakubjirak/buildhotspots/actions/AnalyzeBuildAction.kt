@@ -12,7 +12,6 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.wm.ToolWindowManager
 import com.jakubjirak.buildhotspots.analyzer.BuildHotspotAnalyzer
 import com.jakubjirak.buildhotspots.history.BuildHistoryStore
-import com.jakubjirak.buildhotspots.licensing.FreemiumGate
 import com.jakubjirak.buildhotspots.parser.GradleProfileParser
 import com.jakubjirak.buildhotspots.settings.BuildHotspotsSettings
 import com.jakubjirak.buildhotspots.ui.BuildHotspotsPanel
@@ -67,10 +66,7 @@ class AnalyzeBuildAction : AnAction() {
                 val hotspots = analyzer.analyze(profile)
 
                 // Store in history
-                val freemiumGate = FreemiumGate.getInstance()
-                if (freemiumGate.isPaidFeatureAvailable(FreemiumGate.FEATURE_HISTORY)) {
-                    BuildHistoryStore.getInstance().addProfile(profile)
-                }
+                BuildHistoryStore.getInstance().addProfile(profile)
 
                 indicator.fraction = 1.0
 

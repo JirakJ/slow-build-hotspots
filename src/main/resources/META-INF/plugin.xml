@@ -1,6 +1,5 @@
 <idea-plugin>
     <id>com.jakubjirak.buildhotspots</id>
-    <product-descriptor code="PBUILDHOTSPOTS" release-date="20260215" release-version="20262" optional="true"/>
     <name>Slow Build Hotspots</name>
     <vendor email="support@jakubjirak.com" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
 
@@ -73,9 +72,6 @@
         <!-- Application services -->
         <applicationService
                 serviceImplementation="com.jakubjirak.buildhotspots.history.BuildHistoryStore"/>
-
-        <applicationService
-                serviceImplementation="com.jakubjirak.buildhotspots.licensing.FreemiumGate"/>
 
         <!-- Notification group -->
         <notificationGroup

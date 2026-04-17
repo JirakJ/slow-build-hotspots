@@ -2,6 +2,8 @@
     <id>com.jakubjirak.buildhotspots</id>
     <name>Slow Build Hotspots</name>
     <vendor email="support@jakubjirak.com" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
+    <product-descriptor code="PSLOWBUILDHOTSP" release-date="20260417" release-version="20263" optional="true"/>
+
 
     <description><![CDATA[<h2>Slow Build Hotspots — Find and Fix Gradle Build Bottlenecks</h2>
 

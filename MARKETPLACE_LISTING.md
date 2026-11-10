@@ -47,27 +47,23 @@ Task breakdown sorted by duration in the **Build Hotspots** tool window. See cac
 #### 💡 Inline Performance Hints
 Inlay hints shown directly in `build.gradle(.kts)` — dependency resolution time at `dependencies {}` blocks, cache invalidation warnings, execution time on custom tasks, and configuration overhead on `plugins {}`.
 
-#### 🛠️ Optimization Suggestions *(Pro)*
+#### 🛠️ Optimization Suggestions
 Actionable quick-fixes: enable build cache, parallel execution, configuration cache. Each suggestion includes estimated time savings (before/after projections).
 
-#### 📉 Build Time Trends *(Pro)*
+#### 📉 Build Time Trends
 30-day trend graph with regression detection. Spot when builds started getting slower and correlate with code changes.
 
 #### 💾 Build History
-Track build performance over time. Free tier stores the last 5 builds; Pro tier offers unlimited history.
+Track build performance over time with a configurable history (up to 500 builds).
 
-#### 📤 Data Export *(Pro)*
+#### 📤 Data Export
 Export build performance data as CSV or JSON for external analysis and team reporting.
 
 ---
 
 ### 💰 Pricing Model
 
-| Tier | Price | Highlights |
-|------|-------|------------|
-| **Free** | $0 | Profile parsing (last 5 builds), hotspot detection, top 10 slowest tasks, basic inline hints, cache hit-rate, config vs. execution split |
-| **Pro** | $3.90/month or $39/year | Unlimited build history, optimization suggestions with quick-fixes, before/after time-saving projections, 30-day trend graphs with regression detection, all inline hints, CSV/JSON export |
-| **Team** | $7.90/user/month | All Pro features + team-wide build performance metrics, shared optimization recommendations |
+Free & open source (Apache-2.0) — every feature is available to everyone, no license needed.
 
 ---
 
@@ -97,7 +93,7 @@ Export build performance data as CSV or JSON for external analysis and team repo
 2. **Profile your build** — Run `./gradlew build --profile` in the terminal
 3. **Analyze** — Open the **Build Hotspots** tool window → Click **Analyze Build Profile**
 4. **Review hotspots** — Examine task breakdown, severity levels, and cache hit-rate
-5. **Optimize** *(Pro)* — Apply one-click optimization suggestions and compare before/after projections
+5. **Optimize** — Apply one-click optimization suggestions and compare before/after projections
 
 ---
 
@@ -108,8 +104,8 @@ Export build performance data as CSV or JSON for external analysis and team repo
 | 1 | `build-hotspots-dashboard.png` | Performance dashboard showing task breakdown sorted by duration with severity indicators |
 | 2 | `inline-hints-build-gradle.png` | Inline performance hints in build.gradle.kts showing dependency resolution time and cache warnings |
 | 3 | `hotspot-severity-levels.png` | Color-coded severity levels (Critical/Slow/Notable) on the slowest Gradle tasks |
-| 4 | `optimization-suggestions.png` | Actionable optimization suggestions with estimated time savings (Pro) |
-| 5 | `build-time-trends.png` | 30-day trend graph showing build time history with regression detection (Pro) |
+| 4 | `optimization-suggestions.png` | Actionable optimization suggestions with estimated time savings |
+| 5 | `build-time-trends.png` | 30-day trend graph showing build time history with regression detection |
 | 6 | `cache-hit-rate.png` | Cache hit-rate analysis showing missed vs. cached tasks |
 | 7 | `build-health-report.png` | Build health report with top 10 slowest tasks and configuration vs. execution split |
 
@@ -164,8 +160,6 @@ Export build performance data as CSV or JSON for external analysis and team repo
 - [ ] Plugin description under 255 characters for short description field
 - [ ] Full description formatted in HTML for Marketplace submission
 - [ ] Screenshots captured at 1280×800 minimum resolution
-- [ ] Pricing tiers configured in JetBrains Marketplace vendor portal
-- [ ] License agreement uploaded
 - [ ] Plugin JAR/ZIP tested on IntelliJ IDEA 2024.3 (build 232)
 - [ ] Plugin JAR/ZIP tested on Android Studio 2024.3+
 - [ ] Plugin JAR/ZIP tested on latest IntelliJ IDEA version

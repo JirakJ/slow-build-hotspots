@@ -1,8 +1,10 @@
 # Slow Build Hotspots
 
 [![Build](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/build.yml/badge.svg)](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/build.yml)
-[![Version](https://img.shields.io/badge/version-2026.2.2-blue.svg)](https://github.com/JirakJ/slow-build-hotspots/releases)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2026.8.0-blue.svg)](https://github.com/JirakJ/slow-build-hotspots/releases)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
+> **Free & open source** — every feature is unlocked for everyone, no license needed. Licensed under [Apache-2.0](LICENSE).
 
 > Identify slow Gradle tasks, cache misses, and non-incremental builds — right inside your IDE.
 
@@ -88,9 +90,13 @@ cd slow-build-hotspots
 ./gradlew build
 ```
 
-## 📝 License
+## License
 
-MIT — [LICENSE](LICENSE)
+Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE). Copyright 2026 Jakub Jirák.
+
+## Contributing
+
+Issues and pull requests are welcome at https://github.com/JirakJ/slow-build-hotspots.
 
 ## 👤 Author
 

@@ -30,39 +30,16 @@ fixes with estimated time savings.</p>
     <li><b>Inline Performance Hints</b> — see resolution times and cache impact directly in build files</li>
     <li><b>Build Health Report</b> — tool window showing top 10 slowest tasks, cache hit-rate, and configuration vs. execution split</li>
     <li><b>Build History</b> — track the last N builds to spot patterns and regressions</li>
-    <li><b>Optimization Suggestions (Pro)</b> — quick-fixes to enable build cache, parallel execution, and configuration cache with time-saving estimates</li>
-    <li><b>Before/After Projections (Pro)</b> — see how much time each optimization would save</li>
-    <li><b>30-Day Trend Graphs (Pro)</b> — visualize build performance over time with regression detection</li>
-    <li><b>Unlimited Build History (Pro)</b> — free tier keeps last 5; Pro stores all builds</li>
-    <li><b>All Inline Hints (Pro)</b> — free tier shows top 10 hotspots; Pro shows all</li>
-    <li><b>Export Reports (Pro)</b> — CSV and JSON export for sharing and tracking</li>
+    <li><b>Optimization Suggestions</b> — quick-fixes to enable build cache, parallel execution, and configuration cache with time-saving estimates</li>
+    <li><b>Before/After Projections</b> — see how much time each optimization would save</li>
+    <li><b>30-Day Trend Graphs</b> — visualize build performance over time with regression detection</li>
+    <li><b>Configurable Build History</b> — keep up to 500 builds of history</li>
+    <li><b>All Inline Hints</b> — hotspot hints across your build files</li>
+    <li><b>Export Reports</b> — CSV and JSON export for sharing and tracking</li>
 </ul>
 
-<h3>Free Tier</h3>
-<ul>
-    <li>Build profile parsing (last 5 builds)</li>
-    <li>Hotspot detection with severity levels</li>
-    <li>Top 10 slowest tasks in build health report</li>
-    <li>Inline performance hints (top 10 hotspots)</li>
-    <li>Cache hit-rate and configuration vs. execution breakdown</li>
-</ul>
-
-<h3>Pro Tier ($3.90/month)</h3>
-<ul>
-    <li>Unlimited build history</li>
-    <li>Optimization suggestions with one-click quick-fixes</li>
-    <li>Before/after time-saving projections</li>
-    <li>30-day trend graphs with regression detection</li>
-    <li>All inline hints (not just top 10)</li>
-    <li>CSV and JSON export</li>
-</ul>
-
-<h3>Team Tier ($7.90/user/month)</h3>
-<ul>
-    <li>All Pro features</li>
-    <li>Team-wide build performance metrics</li>
-    <li>Shared optimization recommendations</li>
-</ul>
+<h3>Free &amp; Open Source</h3>
+<p>Every feature is free for everyone — no license, no limits. The source code is available under the Apache-2.0 license at <a href="https://github.com/JirakJ/slow-build-hotspots">github.com/JirakJ/slow-build-hotspots</a>. Issues and pull requests are welcome.</p>
 
 <h3>Getting Started</h3>
 <ol>
@@ -90,11 +67,7 @@ Build & DevOps
 
 ## Pricing
 
-| Tier | Price | Features |
-|------|-------|----------|
-| Free | $0 | Profile parsing (5 builds), hotspot detection, top 10 report, basic inline hints |
-| Pro | $3.90/month or $39/year | Unlimited history, optimization suggestions, time-saving projections, 30-day trends, export |
-| Team | $7.90/user/month | All Pro + team-wide build metrics, shared recommendations |
+Free & open source (Apache-2.0) — every feature is available to everyone, no license needed.
 
 ## Screenshots Needed
 

@@ -1,8 +1,7 @@
 <idea-plugin>
     <id>com.jakubjirak.buildhotspots</id>
     <name>Slow Build Hotspots</name>
-    <vendor email="support@jakubjirak.com" url="https://github.com/jakubjirak">Jakub Jirák</vendor>
-    <product-descriptor code="PSLOWBUILDHOTSP" release-date="20260417" release-version="20263" optional="true"/>
+    <vendor email="support@jakubjirak.com" url="https://github.com/JirakJ/slow-build-hotspots">Jakub Jirák</vendor>
 
 
     <description><![CDATA[<h2>Slow Build Hotspots — Find and Fix Gradle Build Bottlenecks</h2>
@@ -32,7 +31,7 @@
 <h3>Optimization</h3>
 <ul>
   <li><b>Optimization Suggestions</b> — Specific recommendations per task with before/after projections</li>
-  <li><b>Unlimited History</b> — Track all builds, not just the last 5</li>
+  <li><b>Configurable History</b> — Keep up to 500 builds of history</li>
   <li><b>Data Export</b> — Export results as CSV or JSON</li>
 </ul>
 
@@ -96,6 +95,8 @@
     </actions>
 
     <change-notes><![CDATA[
+        <h3>2026.8.0</h3><ul><li>The plugin is now completely free — all features unlocked, no license needed.</li><li>Source code is now open source under Apache-2.0: https://github.com/JirakJ/slow-build-hotspots</li></ul>
+
         <h3>What's New</h3>
         <ul>
             <li><b>Build Profile Analysis</b> - Parse Gradle --profile HTML reports to identify slow tasks and bottlenecks</li>

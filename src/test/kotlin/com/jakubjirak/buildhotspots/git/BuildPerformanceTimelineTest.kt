@@ -2,6 +2,7 @@ package com.jakubjirak.buildhotspots.git
 
 import com.jakubjirak.buildhotspots.model.BuildProfile
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class BuildPerformanceTimelineTest {
@@ -93,5 +94,27 @@ class BuildPerformanceTimelineTest {
         val stats = timeline.computeStatistics(history)
 
         assertEquals(20000L, stats.avgMs)
+    }
+
+    @Test
+    fun `timeline is sorted by date and attaches closest commit`() {
+        val history = listOf(
+            BuildProfile(totalTime = 300, tasks = emptyList(), timestamp = 30),
+            BuildProfile(totalTime = 100, tasks = emptyList(), timestamp = 10),
+        )
+        val metadata = listOf(CommitMetadata("c1", "m", "a", 9), CommitMetadata("c3", "m", "a", 31))
+
+        val entries = timeline.buildTimeline(history, metadata)
+
+        assertEquals(listOf(10L, 30L), entries.map { it.date })
+        assertEquals(listOf("c1", "c3"), entries.map { it.commitHash })
+        assertEquals(listOf(100L, 300L), entries.map { it.buildTimeMs })
+    }
+
+    @Test
+    fun `timeline without metadata uses unknown hash`() {
+        val entries = timeline.buildTimeline(listOf(BuildProfile(totalTime = 1, tasks = emptyList(), timestamp = 1)))
+        assertEquals("unknown", entries.single().commitHash)
+        assertTrue(timeline.buildTimeline(emptyList()).isEmpty())
     }
 }

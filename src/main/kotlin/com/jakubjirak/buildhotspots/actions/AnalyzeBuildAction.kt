@@ -66,7 +66,7 @@ class AnalyzeBuildAction : AnAction() {
                 val hotspots = analyzer.analyze(profile)
 
                 // Store in history
-                BuildHistoryStore.getInstance().addProfile(profile)
+                BuildHistoryStore.getInstance().addProfile(profile, settings.maxHistoryEntries)
 
                 indicator.fraction = 1.0
 

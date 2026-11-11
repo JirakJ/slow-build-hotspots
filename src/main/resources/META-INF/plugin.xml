@@ -12,32 +12,18 @@
   deliver measurable build time improvements.
 </p>
 
-<h3>Build Analysis</h3>
+<h3>Features</h3>
 <ul>
-  <li><b>Profile Parsing</b> — Automatically parse Gradle <code>--profile</code> HTML reports</li>
-  <li><b>Hotspot Detection</b> — Ranked list of slowest tasks with severity levels (Critical, Slow, Notable)</li>
-  <li><b>Cache Miss Analysis</b> — Detect tasks that should be cached but are not</li>
-  <li><b>Non-Incremental Detection</b> — Find tasks that rebuild unnecessarily</li>
-</ul>
-
-<h3>Visualization</h3>
-<ul>
-  <li><b>Performance Dashboard</b> — Visual breakdown of build time by task, phase, and module</li>
-  <li><b>Inline Hints</b> — Hotspot annotations directly in build.gradle(.kts) files</li>
-  <li><b>Build Health Report</b> — Top 10 slowest tasks, cache hit rate, config vs execution split</li>
-  <li><b>Trend Graphs</b> — 30-day build time trends with regression detection</li>
-</ul>
-
-<h3>Optimization</h3>
-<ul>
-  <li><b>Optimization Suggestions</b> — Specific recommendations per task with before/after projections</li>
-  <li><b>Configurable History</b> — Keep up to 500 builds of history</li>
-  <li><b>Data Export</b> — Export results as CSV or JSON</li>
+  <li><b>Profile Parsing</b> — parses the latest Gradle <code>--profile</code> HTML report (<code>build/reports/profile</code> or a custom directory)</li>
+  <li><b>Hotspot Detection</b> — slow tasks (by share of total build time), cache misses, non-incremental tasks and high configuration time, each with a severity (Critical / Warning / Info) and a concrete suggestion</li>
+  <li><b>Task Breakdown</b> — sortable table of every task with duration, cache status and incremental flag</li>
+  <li><b>Trend Tab</b> — bar chart of the slowest tasks, plus average / median / P95 / min / max over your analyzed builds and regressions (builds ≥15% slower than the previous five)</li>
+  <li><b>Configurable</b> — slow-task and configuration-time thresholds, profile directory and how many builds of history to keep (10–500)</li>
 </ul>
 
 <h3>Requirements</h3>
 <ul>
-  <li>IntelliJ IDEA or compatible JetBrains IDE (2024.1+)</li>
+  <li>IntelliJ IDEA 2023.2+ or another IntelliJ-based IDE</li>
   <li>Gradle project with <code>--profile</code> support</li>
 </ul>
 
@@ -48,7 +34,6 @@
 </ul>]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends optional="true" config-file="git-features.xml">Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Tool window -->
@@ -97,17 +82,5 @@
     <change-notes><![CDATA[
         <h3>2026.8.0</h3><ul><li>The plugin is now completely free — all features unlocked, no license needed.</li><li>Source code is now open source under Apache-2.0: https://github.com/JirakJ/slow-build-hotspots</li></ul>
 
-        <h3>What's New</h3>
-        <ul>
-            <li><b>Build Profile Analysis</b> - Parse Gradle --profile HTML reports to identify slow tasks and bottlenecks</li>
-            <li><b>Hotspot Detection</b> - Find slow tasks, cache misses, and non-incremental builds with severity levels</li>
-            <li><b>Performance Dashboard</b> - Visual breakdown of build time sorted by task duration with phase analysis</li>
-            <li><b>Inline Performance Hints</b> - See build hotspot annotations directly in your build.gradle(.kts) files</li>
-            <li><b>Build Health Report</b> - Summary of top 10 slowest tasks, cache hit rate, and config vs execution split</li>
-            <li><b>Optimization Suggestions</b> - Actionable recommendations per task with before/after time projections</li>
-            <li><b>Build History Tracking</b> - Compare builds over time to detect performance regressions</li>
-            <li><b>Trend Graphs</b> - 30-day build time trend visualization with regression detection</li>
-            <li><b>Data Export</b> - Export build analysis results as CSV or JSON for team sharing</li>
-        </ul>
     ]]></change-notes>
 </idea-plugin>

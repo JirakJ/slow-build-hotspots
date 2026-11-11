@@ -81,14 +81,47 @@ class BuildRegressionDetectorTest {
     }
 
     @Test
-    fun `no regression with empty commit metadata`() {
-        val history = (0..10).map {
-            BuildProfile(totalTime = 1000 + (it * 500L), tasks = emptyList(), timestamp = it.toLong())
+    fun `regressions are detected without commit metadata`() {
+        val history = buildList {
+            repeat(5) { add(BuildProfile(totalTime = 1000, tasks = emptyList(), timestamp = it.toLong())) }
+            add(BuildProfile(totalTime = 2000, tasks = emptyList(), timestamp = 42))
         }
 
-        val regressions = detector.detectRegressions(history, emptyList())
+        val regression = detector.detectRegressions(history).single()
 
-        assertTrue(regressions.isEmpty())
+        assertEquals("unknown", regression.commitHash)
+        assertEquals(42L, regression.buildTimestamp)
+        assertEquals(100.0, regression.percentage, 0.001)
+    }
+
+    @Test
+    fun `steady or faster builds are not regressions`() {
+        val history = (0..10).map { BuildProfile(totalTime = 1000 - it * 10L, tasks = emptyList(), timestamp = it.toLong()) }
+        assertTrue(detector.detectRegressions(history).isEmpty())
+    }
+
+    @Test
+    fun `closest commit metadata is attached`() {
+        val history = buildList {
+            repeat(5) { add(BuildProfile(totalTime = 1000, tasks = emptyList(), timestamp = it * 100L)) }
+            add(BuildProfile(totalTime = 1500, tasks = emptyList(), timestamp = 510))
+        }
+        val metadata = listOf(
+            CommitMetadata("early", "m1", "a", 0),
+            CommitMetadata("late", "m2", "b", 500),
+        )
+        val regression = detector.detectRegressions(history, metadata).single()
+        assertEquals("late", regression.commitHash)
+        assertEquals("b", regression.author)
+    }
+
+    @Test
+    fun `zero baseline is skipped`() {
+        val history = buildList {
+            repeat(5) { add(BuildProfile(totalTime = 0, tasks = emptyList(), timestamp = it.toLong())) }
+            add(BuildProfile(totalTime = 1000, tasks = emptyList(), timestamp = 5))
+        }
+        assertTrue(detector.detectRegressions(history).isEmpty())
     }
 
     @Test
@@ -131,55 +164,5 @@ class BuildRegressionDetectorTest {
         assertEquals(1000L, regressions[0].deltaMs)
         assertEquals(2000L, regressions[0].buildTimeBefore)
         assertEquals(3000L, regressions[0].buildTimeAfter)
-    }
-
-    // Extension for tests that don't need project
-    private fun BuildRegressionDetector.detectRegressions(
-        buildHistory: List<BuildProfile>,
-        commitMetadata: List<CommitMetadata>,
-    ): List<BuildRegressionDetector.BuildRegression> {
-        if (commitMetadata.isEmpty()) return emptyList()
-        val ws = this.let {
-            try {
-                val field = BuildRegressionDetector::class.java.getDeclaredField("windowSize")
-                field.isAccessible = true
-                field.getInt(it)
-            } catch (_: Exception) {
-                BuildRegressionDetector.DEFAULT_WINDOW_SIZE
-            }
-        }
-        if (buildHistory.size < ws + 1) return emptyList()
-
-        val regressions = mutableListOf<BuildRegressionDetector.BuildRegression>()
-        for (i in ws until buildHistory.size) {
-            val baseline = buildHistory.subList(i - ws, i)
-            val current = buildHistory[i]
-            val avgBaseline = baseline.map { it.totalTime }.average().toLong()
-            if (avgBaseline == 0L) continue
-            val delta = current.totalTime - avgBaseline
-            val percentage = (delta.toDouble() / avgBaseline) * 100.0
-            val threshold = try {
-                val field = BuildRegressionDetector::class.java.getDeclaredField("regressionThresholdPercent")
-                field.isAccessible = true
-                field.getDouble(this)
-            } catch (_: Exception) {
-                BuildRegressionDetector.DEFAULT_REGRESSION_THRESHOLD
-            }
-            if (percentage >= threshold) {
-                val metadata = commitMetadata.minByOrNull { kotlin.math.abs(it.timestamp - current.timestamp) }
-                regressions.add(
-                    BuildRegressionDetector.BuildRegression(
-                        commitHash = metadata?.hash ?: "unknown",
-                        commitMessage = metadata?.message ?: "",
-                        author = metadata?.author ?: "unknown",
-                        buildTimeBefore = avgBaseline,
-                        buildTimeAfter = current.totalTime,
-                        deltaMs = delta,
-                        percentage = percentage,
-                    ),
-                )
-            }
-        }
-        return regressions
     }
 }

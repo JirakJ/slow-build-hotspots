@@ -1,9 +1,6 @@
 package com.jakubjirak.buildhotspots.git
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
-import com.jakubjirak.buildhotspots.history.BuildHistoryStore
 import com.jakubjirak.buildhotspots.model.BuildProfile
 
 /**
@@ -26,19 +23,18 @@ class BuildRegressionDetector(
         val buildTimeAfter: Long,
         val deltaMs: Long,
         val percentage: Double,
+        val buildTimestamp: Long = 0,
     )
 
     /**
      * Detects build time regressions from stored build history.
      * Uses a sliding window to compute baseline and compares each build against it.
      */
-    @Suppress("UNUSED_PARAMETER")
     fun detectRegressions(
-        project: Project,
         buildHistory: List<BuildProfile>,
-        commitMetadata: List<CommitMetadata>,
+        commitMetadata: List<CommitMetadata> = emptyList(),
     ): List<BuildRegression> {
-        if (buildHistory.size < windowSize + 1 || commitMetadata.isEmpty()) {
+        if (windowSize < 1 || buildHistory.size < windowSize + 1) {
             return emptyList()
         }
 
@@ -66,6 +62,7 @@ class BuildRegressionDetector(
                         buildTimeAfter = current.totalTime,
                         deltaMs = delta,
                         percentage = percentage,
+                        buildTimestamp = current.timestamp,
                     ),
                 )
             }
@@ -73,19 +70,6 @@ class BuildRegressionDetector(
 
         LOG.info("Detected ${regressions.size} build regressions from ${buildHistory.size} builds")
         return regressions
-    }
-
-    /**
-     * Detects regressions using the application-level build history store.
-     */
-    @Suppress("UNUSED_PARAMETER")
-    fun detectRegressionsFromStore(
-        project: Project,
-        commitMetadata: List<CommitMetadata>,
-    ): List<BuildRegression> {
-        val store = BuildHistoryStore.getInstance()
-        val history = store.getHistory()
-        return detectRegressions(project, history, commitMetadata)
     }
 
     /**

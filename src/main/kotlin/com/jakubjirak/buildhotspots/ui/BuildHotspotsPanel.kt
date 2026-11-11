@@ -7,6 +7,8 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
 import com.jakubjirak.buildhotspots.analyzer.BuildHotspotAnalyzer
+import com.jakubjirak.buildhotspots.analyzer.TrendReport
+import com.jakubjirak.buildhotspots.history.BuildHistoryStore
 import com.jakubjirak.buildhotspots.model.BuildHotspot
 import com.jakubjirak.buildhotspots.model.BuildProfile
 import com.jakubjirak.buildhotspots.parser.GradleProfileParser
@@ -112,6 +114,7 @@ class BuildHotspotsPanel(private val project: Project) : JPanel(BorderLayout()) 
             configurationThresholdPercent = settings.configurationThresholdPercent,
         )
         val hotspots = analyzer.analyze(profile)
+        BuildHistoryStore.getInstance().addProfile(profile, settings.maxHistoryEntries)
 
         updateDisplay(profile, hotspots)
         LOG.info("Build analysis complete: ${hotspots.size} hotspots found")
@@ -155,28 +158,7 @@ class BuildHotspotsPanel(private val project: Project) : JPanel(BorderLayout()) 
     }
 
     private fun updateTrend(profile: BuildProfile) {
-        val sb = StringBuilder()
-        sb.appendLine("=== Build Time Breakdown ===")
-        sb.appendLine()
-        sb.appendLine("Total build time: ${profile.totalTime}ms")
-        sb.appendLine("Tasks executed: ${profile.tasks.size}")
-        sb.appendLine()
-
-        val maxDuration = profile.tasks.maxOfOrNull { it.duration } ?: 1
-        val barWidth = 40
-
-        profile.tasks.sortedByDescending { it.duration }.take(15).forEach { task ->
-            val barLength = ((task.duration.toDouble() / maxDuration) * barWidth).toInt().coerceAtLeast(1)
-            val bar = "█".repeat(barLength)
-            val percentage = if (profile.totalTime > 0) {
-                (task.duration * 100) / profile.totalTime
-            } else {
-                0
-            }
-            sb.appendLine("${task.name.padEnd(40).take(40)} $bar ${task.duration}ms (${percentage}%)")
-        }
-
-        trendArea.text = sb.toString()
+        trendArea.text = TrendReport.render(profile, BuildHistoryStore.getInstance().getHistory())
     }
 
     private fun clearResults() {

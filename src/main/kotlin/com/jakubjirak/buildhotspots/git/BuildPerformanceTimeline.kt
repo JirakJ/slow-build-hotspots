@@ -1,7 +1,5 @@
 package com.jakubjirak.buildhotspots.git
 
-import com.intellij.openapi.project.Project
-import com.jakubjirak.buildhotspots.history.BuildHistoryStore
 import com.jakubjirak.buildhotspots.model.BuildProfile
 
 /**
@@ -35,11 +33,9 @@ class BuildPerformanceTimeline {
     /**
      * Builds a timeline from build history and commit metadata.
      */
-    @Suppress("UNUSED_PARAMETER")
     fun buildTimeline(
-        project: Project,
         buildHistory: List<BuildProfile>,
-        commitMetadata: List<CommitMetadata>,
+        commitMetadata: List<CommitMetadata> = emptyList(),
     ): List<BuildTimelineEntry> {
         if (buildHistory.isEmpty()) return emptyList()
 
@@ -54,19 +50,6 @@ class BuildPerformanceTimeline {
                 taskCount = profile.tasks.size,
             )
         }.sortedBy { it.date }
-    }
-
-    /**
-     * Builds a timeline from the stored build history.
-     */
-    @Suppress("UNUSED_PARAMETER")
-    fun buildTimelineFromStore(
-        project: Project,
-        commitMetadata: List<CommitMetadata>,
-    ): List<BuildTimelineEntry> {
-        val store = BuildHistoryStore.getInstance()
-        val history = store.getHistory()
-        return buildTimeline(project, history, commitMetadata)
     }
 
     /**
@@ -89,15 +72,6 @@ class BuildPerformanceTimeline {
             maxMs = times.last(),
             totalBuilds = times.size,
         )
-    }
-
-    /**
-     * Computes statistics from the stored build history.
-     */
-    fun computeStatisticsFromStore(): BuildStatistics {
-        val store = BuildHistoryStore.getInstance()
-        val history = store.getHistory()
-        return computeStatistics(history)
     }
 
     private fun computeMedian(sortedValues: List<Long>): Long {

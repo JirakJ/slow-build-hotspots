@@ -27,7 +27,9 @@ class GradleProfileParser {
     fun parse(file: File): BuildProfile? {
         return try {
             val content = file.readText()
-            parse(content, file.absolutePath)
+            // The report's modification time is when the build ran, which keeps history ordering
+            // and duplicate detection stable when the same report is analyzed twice.
+            parse(content, file.absolutePath)?.copy(timestamp = file.lastModified())
         } catch (e: Exception) {
             LOG.warn("Failed to read profile file: ${file.absolutePath}", e)
             null

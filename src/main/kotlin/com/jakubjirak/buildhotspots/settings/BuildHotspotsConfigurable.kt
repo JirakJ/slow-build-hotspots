@@ -10,17 +10,6 @@ class BuildHotspotsConfigurable : BoundConfigurable("Slow Build Hotspots") {
     private val settings get() = BuildHotspotsSettings.getInstance()
 
     override fun createPanel() = panel {
-        group("General") {
-            row {
-                checkBox("Enable Slow Build Hotspots")
-                    .bindSelected(settings::enabled)
-            }
-            row {
-                checkBox("Auto-analyze after build")
-                    .bindSelected(settings::autoAnalyze)
-                    .comment("Automatically run build analysis when a build completes")
-            }
-        }
         group("Thresholds") {
             row("Slow task threshold (%):") {
                 spinner(1..100)
@@ -47,7 +36,7 @@ class BuildHotspotsConfigurable : BoundConfigurable("Slow Build Hotspots") {
             row("Max history entries:") {
                 spinner(10..500)
                     .bindIntValue(settings::maxHistoryEntries)
-                    .comment("Maximum number of build analyses to keep in history")
+                    .comment("Maximum number of analyzed builds kept for the Trend tab statistics")
             }
         }
     }

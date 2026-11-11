@@ -207,4 +207,33 @@ class GradleProfileParserTest {
         val task = profile!!.tasks[0]
         assertTrue(!task.incremental)
     }
+
+    @Test
+    fun `parse file uses report path and modification time`(@org.junit.jupiter.api.io.TempDir dir: java.io.File) {
+        val report = java.io.File(dir, "profile-2026.html")
+        report.writeText("<table><tr><td>:compileKotlin</td><td>1.5s</td></tr></table>")
+        report.setLastModified(1_700_000_000_000L)
+
+        val profile = parser.parse(report)!!
+
+        assertEquals(report.absolutePath, profile.projectPath)
+        assertEquals(1_700_000_000_000L, profile.timestamp)
+        assertEquals(1500L, profile.tasks.single().duration)
+    }
+
+    @Test
+    fun `findLatestProfile picks newest html and ignores other files`(@org.junit.jupiter.api.io.TempDir dir: java.io.File) {
+        assertNull(parser.findLatestProfile(java.io.File(dir, "missing")))
+        val old = java.io.File(dir, "profile-a.html").apply { writeText("x"); setLastModified(1_000_000L) }
+        val new = java.io.File(dir, "profile-b.html").apply { writeText("x"); setLastModified(2_000_000L) }
+        java.io.File(dir, "notes.txt").apply { writeText("x"); setLastModified(3_000_000L) }
+
+        assertEquals(new, parser.findLatestProfile(dir))
+        assertTrue(old.exists())
+    }
+
+    @Test
+    fun `unreadable file yields null`(@org.junit.jupiter.api.io.TempDir dir: java.io.File) {
+        assertNull(parser.parse(java.io.File(dir, "does-not-exist.html")))
+    }
 }

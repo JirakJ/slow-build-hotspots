@@ -1,6 +1,6 @@
 # Slow Build Hotspots
 
-[![Build](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/build.yml/badge.svg)](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/build.yml)
+[![Build](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/verify.yml/badge.svg)](https://github.com/JirakJ/slow-build-hotspots/actions/workflows/verify.yml)
 [![Version](https://img.shields.io/badge/version-2026.8.0-blue.svg)](https://github.com/JirakJ/slow-build-hotspots/releases)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
@@ -10,17 +10,11 @@
 
 ## ✨ Features
 
-- **Build profile parsing** — analyzes Gradle `--profile` HTML reports
-- **Hotspot detection** — identifies slow tasks, cache misses, and non-incremental builds
-- **Performance dashboard** — task breakdown sorted by duration in the Build Hotspots tool window
-- **Inline performance hints** — hotspot inlay hints in `build.gradle(.kts)`
-- **Build health report** — top 10 slowest tasks, cache hit-rate, configuration vs. execution time split
-- **Severity levels** — 🔴 Critical (>30s), 🟠 Slow (10–30s), 🟡 Notable (5–10s)
-- **Build history** — stores build profiles for comparison
-- **Optimization suggestions** — actionable quick-fixes (enable build cache, parallel execution, configuration cache)
-- **Before/after projections** — estimated time savings per suggestion
-- **Build time trends** — 30-day trend graph with regression detection
-- **Data export** — CSV/JSON export of build performance data
+- **Build profile parsing** — reads the latest Gradle `--profile` HTML report
+- **Hotspot detection** — slow tasks, cache misses, non-incremental tasks and high configuration time, each with a severity and an optimization suggestion
+- **Task breakdown** — every task sorted by duration with cache status and incremental flag
+- **Trend tab** — bar chart of the slowest tasks plus statistics (average, median, P95, min, max) over the analyzed builds and a list of regressions
+- **Build history** — each analyzed build is stored locally (configurable cap) so the trend statistics grow over time
 
 ## 📦 Installation
 
@@ -40,47 +34,36 @@
    ```bash
    ./gradlew build --profile
    ```
-2. Open the **Build Hotspots** tool window (bottom panel)
-3. Click **Analyze Build Profile** to parse the latest profile report
-4. Review the task breakdown, hotspots, and optimization suggestions
+2. Open the **Build Hotspots** tool window (bottom panel) and click **Analyze Latest Build**, or use **Tools → Analyze Build Profile**
+3. Review the **Task Breakdown**, **Hotspots** and **Trend** tabs
 
 ## ⚙️ Configuration
 
-Open **Settings → Tools → Slow Build Hotspots** to configure the plugin.
+Open **Settings → Tools → Slow Build Hotspots**.
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `enabled` | `true` | Enable/disable the plugin |
-| `slowTaskThresholdPercent` | `10` | Minimum percentage of total build time to flag a task as slow |
-| `configurationThresholdPercent` | `20` | Threshold for configuration time warnings |
-| `profileDirectoryOverride` | _(empty)_ | Custom path to Gradle profile reports (default: `build/reports/profile`) |
-| `autoAnalyze` | `false` | Automatically analyze profile after each build |
-| `maxHistoryEntries` | `50` | Maximum number of stored build profile entries |
+| Slow task threshold (%) | `10` | Tasks taking at least this share of total build time are reported as slow |
+| Configuration threshold (%) | `20` | Total configuration time above this share of the build is reported |
+| Profile directory | _(empty)_ | Directory with Gradle profile reports; empty means `<project>/build/reports/profile` |
+| Max history entries | `50` | How many analyzed builds are kept for the Trend statistics (10–500) |
 
 ## 🎯 Usage
 
-### Analyzing a Build Profile
-1. **Tools → Analyze Build Profile** or use the action in the Build Hotspots tool window
-2. The plugin parses the Gradle `--profile` HTML report from `build/reports/profile/`
-3. Results are displayed in the **Build Hotspots** tool window with tasks sorted by duration
+### Hotspot severity
+- **Slow task** — 🔴 Critical ≥30% of total build time, 🟠 Warning ≥20%, 🟡 Info at or above the threshold
+- **Cache miss / non-incremental** (tasks over 500 ms) — 🔴 Critical ≥5 s, 🟠 Warning ≥2 s, 🟡 Info otherwise
+- **Configuration time** — 🔴 Critical ≥40%, 🟠 Warning ≥30%, 🟡 Info at or above the threshold
 
-### Understanding Hotspot Severity
-- 🔴 **Critical** — task takes more than 30 seconds
-- 🟠 **Slow** — task takes 10–30 seconds
-- 🟡 **Notable** — task takes 5–10 seconds
-
-### Inline Hints (in `build.gradle.kts`)
-- Dependency resolution time shown at `dependencies {}` blocks
-- Cache invalidation warnings on specific dependencies
-- Execution time and incremental status on custom tasks
-- Configuration overhead on `plugins {}` blocks
+### Trend and regressions
+Every analysis is added to a local history (re-analyzing the same report is ignored). The **Trend** tab shows
+statistics over that history and lists builds that were at least 15% slower than the average of the five builds
+before them. Regression detection starts once more than five builds have been analyzed.
 
 ## 📋 Requirements
 
-- IntelliJ IDEA 2024.3+ (or any JetBrains IDE based on IntelliJ Platform 2024.3+)
-- Android Studio (2024.3+)
-- Gradle 7.0+ (for profile format support)
-- JVM 17+
+- IntelliJ IDEA 2023.2+ (or another IntelliJ-based IDE, build 232+)
+- A Gradle build that can run with `--profile`
 
 ## 🏗️ Building from Source
 

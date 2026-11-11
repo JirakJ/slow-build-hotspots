@@ -35,6 +35,9 @@ class BuildHistoryStore : PersistentStateComponent<BuildHistoryStore.State> {
         var taskDurations: String = "",
         var taskCacheStatuses: String = "",
     ) {
+        fun isSameBuildAs(profile: BuildProfile): Boolean =
+            projectPath == profile.projectPath && timestamp == profile.timestamp && totalTime == profile.totalTime
+
         fun toBuildProfile(): BuildProfile {
             val names = if (taskNames.isBlank()) emptyList() else taskNames.split(SEPARATOR)
             val durations = if (taskDurations.isBlank()) emptyList() else taskDurations.split(SEPARATOR)
@@ -71,7 +74,14 @@ class BuildHistoryStore : PersistentStateComponent<BuildHistoryStore.State> {
         myState = state
     }
 
-    fun addProfile(profile: BuildProfile) {
+    /**
+     * Stores [profile], keeping at most [maxEntries] (oldest dropped first). Re-analyzing the same
+     * report (same source path, timestamp and total time as the latest entry) is ignored.
+     *
+     * @return `true` if the profile was added.
+     */
+    fun addProfile(profile: BuildProfile, maxEntries: Int = myState.maxEntries): Boolean {
+        if (myState.entries.lastOrNull()?.isSameBuildAs(profile) == true) return false
         val entry = BuildEntry(
             totalTime = profile.totalTime,
             taskCount = profile.tasks.size,
@@ -84,11 +94,14 @@ class BuildHistoryStore : PersistentStateComponent<BuildHistoryStore.State> {
 
         myState.entries.add(entry)
 
-        while (myState.entries.size > myState.maxEntries) {
+        val limit = maxEntries.coerceAtLeast(1)
+        myState.maxEntries = limit
+        while (myState.entries.size > limit) {
             myState.entries.removeAt(0)
         }
 
         LOG.info("Build profile stored. History size: ${myState.entries.size}")
+        return true
     }
 
     fun getHistory(): List<BuildProfile> {

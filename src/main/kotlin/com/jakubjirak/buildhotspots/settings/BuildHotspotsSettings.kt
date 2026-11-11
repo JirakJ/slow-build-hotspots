@@ -13,11 +13,9 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 )
 class BuildHotspotsSettings : PersistentStateComponent<BuildHotspotsSettings> {
 
-    var enabled: Boolean = true
     var slowTaskThresholdPercent: Int = DEFAULT_SLOW_TASK_THRESHOLD
     var configurationThresholdPercent: Int = DEFAULT_CONFIGURATION_THRESHOLD
     var profileDirectoryOverride: String = ""
-    var autoAnalyze: Boolean = false
     var maxHistoryEntries: Int = DEFAULT_MAX_HISTORY
 
     override fun getState(): BuildHotspotsSettings = this

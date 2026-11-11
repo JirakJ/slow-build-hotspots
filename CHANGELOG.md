@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- The Trend tab now shows statistics (average, median, P95, min, max) over analyzed builds and lists build-time regressions.
+
+### Fixed
+- Builds analyzed from the tool window were not stored in history, and the "Max history entries" setting was ignored (history was always capped at 50).
+- Re-analyzing the same profile report no longer adds a duplicate history entry; history entries use the report's modification time.
+
+### Removed
+- "Enable" and "Auto-analyze after build" settings — neither had any effect.
+- The unused Git4Idea optional dependency and the unused build impact predictor.
+- Documentation of features that do not exist (inline build-file hints, export, 30-day graphs, before/after projections).
+
 ## [2026.8.0] - 2026-11-10
 
 ### Changed

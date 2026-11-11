@@ -6,11 +6,11 @@ Slow Build Hotspots
 
 ## Tagline
 
-Find what's slowing your Gradle build — and fix it in one click.
+Find what's slowing your Gradle build.
 
 ## Short Description
 
-Parses Gradle build profiles to find your slowest tasks, worst cache misses, and configuration bottlenecks. Actionable optimization suggestions with time-saving estimates.
+Parses Gradle build profiles to find your slowest tasks, cache misses, non-incremental tasks and configuration overhead, with a concrete suggestion for each and build-time statistics over time.
 
 ## Full Description
 
@@ -19,23 +19,16 @@ Parses Gradle build profiles to find your slowest tasks, worst cache misses, and
 
 <p>Your Gradle build takes 3 minutes but you don't know why. Is it a single slow task? Poor cache
 utilization? Configuration overhead? <b>Slow Build Hotspots</b> parses Gradle's
-<code>--profile</code> output to pinpoint exactly what's slowing you down — and gives you one-click
-fixes with estimated time savings.</p>
+<code>--profile</code> report to pinpoint what's slowing you down and suggests what to change.</p>
 
 <h3>Key Features</h3>
 <ul>
-    <li><b>Build Profile Parsing</b> — automatically analyzes Gradle <code>--profile</code> HTML/JSON output to extract task times, cache outcomes, and configuration costs</li>
-    <li><b>Hotspot Detection</b> — identifies tasks that are never UP-TO-DATE, cache-invalidating dependencies, and slow configuration modules</li>
-    <li><b>Severity Levels</b> — 🔴 Critical (&gt;30s), 🟠 Slow (10–30s), 🟡 Notable (5–10s)</li>
-    <li><b>Inline Performance Hints</b> — see resolution times and cache impact directly in build files</li>
-    <li><b>Build Health Report</b> — tool window showing top 10 slowest tasks, cache hit-rate, and configuration vs. execution split</li>
-    <li><b>Build History</b> — track the last N builds to spot patterns and regressions</li>
-    <li><b>Optimization Suggestions</b> — quick-fixes to enable build cache, parallel execution, and configuration cache with time-saving estimates</li>
-    <li><b>Before/After Projections</b> — see how much time each optimization would save</li>
-    <li><b>30-Day Trend Graphs</b> — visualize build performance over time with regression detection</li>
-    <li><b>Configurable Build History</b> — keep up to 500 builds of history</li>
-    <li><b>All Inline Hints</b> — hotspot hints across your build files</li>
-    <li><b>Export Reports</b> — CSV and JSON export for sharing and tracking</li>
+    <li><b>Build Profile Parsing</b> — reads the latest Gradle <code>--profile</code> HTML report</li>
+    <li><b>Hotspot Detection</b> — slow tasks, cache misses, non-incremental tasks and high configuration time</li>
+    <li><b>Severity &amp; Suggestions</b> — Critical / Warning / Info with a concrete recommendation per hotspot</li>
+    <li><b>Task Breakdown</b> — every task sorted by duration with cache status and incremental flag</li>
+    <li><b>Trend Tab</b> — slowest-task bar chart, average / median / P95 over analyzed builds, and regressions (≥15% slower than the previous five builds)</li>
+    <li><b>Configurable History</b> — keep 10–500 analyzed builds</li>
 </ul>
 
 <h3>Free &amp; Open Source</h3>
@@ -69,10 +62,8 @@ Build & DevOps
 
 Free & open source (Apache-2.0) — every feature is available to everyone, no license needed.
 
-## Screenshots Needed
+## Screenshots
 
-1. **Build Health Report** — Build Hotspots tool window showing top 10 slowest tasks with severity indicators and cache hit-rate
-2. **Inline Performance Hints** — `build.gradle.kts` with resolution time and cache status shown inline next to dependencies and tasks
-3. **Optimization Suggestions** — quick-fix popup offering to enable build cache with estimated time savings
-4. **30-Day Trend Graph** — chart showing build time trend with a regression highlighted
-5. **Hotspot Detection** — task list with 🔴🟠🟡 severity indicators showing tasks that are never UP-TO-DATE
+1. **Hotspots tab** — hotspots with 🔴🟠🟡 severity and suggestions
+2. **Task Breakdown tab** — tasks sorted by duration with cache status
+3. **Trend tab** — slowest-task bars, history statistics and a detected regression

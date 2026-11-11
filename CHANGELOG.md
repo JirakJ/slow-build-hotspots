@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2026.9.0] - 2026-11-11
+
 ### Added
 - The Trend tab now shows statistics (average, median, P95, min, max) over analyzed builds and lists build-time regressions.
 
